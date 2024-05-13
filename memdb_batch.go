@@ -72,12 +72,12 @@ func (b *memDBBatch) Write() error {
 		return errBatchClosed
 	}
 	tFormat := "15:04:05.000"
-	fmt.Printf("[%s]memDBBatch.Write:: call db.mtx.Lock()", time.Now().Format(tFormat))
+	fmt.Printf("[%s]memDBBatch.Write:: call db.mtx.Lock()\n", time.Now().Format(tFormat))
 	b.db.mtx.Lock()
-	fmt.Printf("[%s]memDBBatch.Write:: acquire db.mtx.Lock()", time.Now().Format(tFormat))
+	fmt.Printf("[%s]memDBBatch.Write:: acquire db.mtx.Lock()\n", time.Now().Format(tFormat))
 	defer b.db.mtx.Unlock()
 
-	fmt.Printf("[%s]memDBBatch.Write:: run operations", time.Now().Format(tFormat))
+	fmt.Printf("[%s]memDBBatch.Write:: run operations\n", time.Now().Format(tFormat))
 	setCnt, delCnt := 0, 0
 	for _, op := range b.ops {
 		switch op.opType {
@@ -91,7 +91,7 @@ func (b *memDBBatch) Write() error {
 			return fmt.Errorf("unknown operation type %v (%v)", op.opType, op)
 		}
 	}
-	fmt.Printf("[%s]memDBBatch.Write:: done operations. setCnt=%d, delCnt=%d", time.Now().Format(tFormat), setCnt, delCnt)
+	fmt.Printf("[%s]memDBBatch.Write:: done operations. setCnt=%d, delCnt=%d\n", time.Now().Format(tFormat), setCnt, delCnt)
 
 	// Make sure batch cannot be used afterwards. Callers should still call Close(), for errors.
 	return b.Close()
